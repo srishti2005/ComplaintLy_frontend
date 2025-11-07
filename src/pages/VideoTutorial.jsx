@@ -7,7 +7,6 @@ const VideoTutorial = ({ onComplete }) => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [showSkip, setShowSkip] = useState(true);
 
   const handlePlayPause = () => {
     if (videoRef.current) {
@@ -31,13 +30,13 @@ const VideoTutorial = ({ onComplete }) => {
     setIsPlaying(false);
     setTimeout(() => {
       onComplete();
-      navigate('/signup');
+      navigate('/dashboard');
     }, 1000);
   };
 
   const handleSkip = () => {
     onComplete();
-    navigate('/signup');
+    navigate('/dashboard');
   };
 
   return (
@@ -89,17 +88,15 @@ const VideoTutorial = ({ onComplete }) => {
           </div>
         </div>
 
-        {showSkip && (
-          <div className="text-center mt-8">
-            <button
-              onClick={handleSkip}
-              className="inline-flex items-center gap-2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-semibold py-3 px-6 rounded-xl transition backdrop-blur-sm"
-            >
-              <SkipForward className="w-5 h-5" />
-              Skip Tutorial
-            </button>
-          </div>
-        )}
+        <div className="text-center mt-8">
+          <button
+            onClick={handleSkip}
+            className="inline-flex items-center gap-2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-semibold py-3 px-6 rounded-xl transition backdrop-blur-sm"
+          >
+            <SkipForward className="w-5 h-5" />
+            Skip Tutorial
+          </button>
+        </div>
 
         <div className="mt-12 grid grid-cols-3 gap-6 text-white">
           <div className="text-center">
@@ -121,7 +118,7 @@ const VideoTutorial = ({ onComplete }) => {
               <span className="text-2xl font-bold">3</span>
             </div>
             <h3 className="font-semibold mb-2">View Results</h3>
-            <p className="text-sm text-purple-100">See category and confidence score</p>
+            <p className="text-sm text-purple-100">See category and save</p>
           </div>
         </div>
       </div>

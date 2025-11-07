@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Mail, Lock, AlertCircle } from 'lucide-react';
 import { login } from '../utils/api';
 
-const Login = ({ onLogin, pendingClassification, onClearPending }) => {
+const Login = ({ onLogin }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
@@ -28,14 +28,7 @@ const Login = ({ onLogin, pendingClassification, onClearPending }) => {
     try {
       const response = await login(formData.email, formData.password);
       onLogin(response.user);
-      
-      // If there's a pending classification, go back to classify page
-      if (pendingClassification) {
-        onClearPending();
-        navigate('/classify');
-      } else {
-        navigate('/dashboard');
-      }
+      navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.error || 'Login failed. Please try again.');
     } finally {
@@ -52,13 +45,6 @@ const Login = ({ onLogin, pendingClassification, onClearPending }) => {
           <p className="text-lg text-purple-100 max-w-md mx-auto">
             Login to continue analyzing and managing your complaints
           </p>
-          {pendingClassification && (
-            <div className="mt-6 p-4 bg-white bg-opacity-20 rounded-xl backdrop-blur-sm">
-              <p className="text-sm">
-                Log in to view your classification results
-              </p>
-            </div>
-          )}
         </div>
       </div>
 

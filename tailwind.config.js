@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#8b5cf6',
+        primary: '#9333ea',
         secondary: '#10b981',
       }
     },

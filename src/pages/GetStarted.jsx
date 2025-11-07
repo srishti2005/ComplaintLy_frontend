@@ -46,18 +46,6 @@ const GetStarted = () => {
             >
               GET STARTED
             </button>
-
-            <div className="mt-8">
-              <p className="text-gray-500 text-sm">
-                Already have an account?{' '}
-                <button
-                  onClick={() => navigate('/login')}
-                  className="text-primary font-semibold hover:underline"
-                >
-                  LOGIN
-                </button>
-              </p>
-            </div>
           </div>
         </div>
       </div>

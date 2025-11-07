@@ -11,11 +11,12 @@ import Classify from './pages/Classify';
 function App() {
   const [user, setUser] = useState(null);
   const [hasSeenVideo, setHasSeenVideo] = useState(false);
-  const [pendingClassification, setPendingClassification] = useState(null);
+  const [complaints, setComplaints] = useState([]);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('user');
-    const seenVideo = localStorage.getItem('hasSeenVideo');
+    const savedUser = sessionStorage.getItem('user');
+    const seenVideo = sessionStorage.getItem('hasSeenVideo');
+    const savedComplaints = sessionStorage.getItem('complaints');
     
     if (savedUser) {
       setUser(JSON.parse(savedUser));
@@ -23,32 +24,40 @@ function App() {
     if (seenVideo) {
       setHasSeenVideo(true);
     }
+    if (savedComplaints) {
+      setComplaints(JSON.parse(savedComplaints));
+    }
   }, []);
 
   const handleLogin = (userData) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+    sessionStorage.setItem('user', JSON.stringify(userData));
   };
 
   const handleLogout = () => {
     setUser(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('hasSeenVideo');
+    sessionStorage.removeItem('user');
     setHasSeenVideo(false);
-    setPendingClassification(null);
+    sessionStorage.removeItem('hasSeenVideo');
   };
 
   const markVideoAsSeen = () => {
     setHasSeenVideo(true);
-    localStorage.setItem('hasSeenVideo', 'true');
+    sessionStorage.setItem('hasSeenVideo', 'true');
   };
 
-  const handlePendingClassification = (data) => {
-    setPendingClassification(data);
+  const addComplaint = (complaint) => {
+    const newComplaints = [...complaints, complaint];
+    setComplaints(newComplaints);
+    sessionStorage.setItem('complaints', JSON.stringify(newComplaints));
   };
 
-  const clearPendingClassification = () => {
-    setPendingClassification(null);
+  const updateComplaintStatus = (complaintId, status) => {
+    const updatedComplaints = complaints.map(c => 
+      c.complaint_id === complaintId ? { ...c, status } : c
+    );
+    setComplaints(updatedComplaints);
+    sessionStorage.setItem('complaints', JSON.stringify(updatedComplaints));
   };
 
   return (
@@ -57,45 +66,44 @@ function App() {
         <Route path="/" element={<GetStarted />} />
         <Route 
           path="/video-tutorial" 
-          element={
-            hasSeenVideo ? <Navigate to="/signup" /> : 
-            <VideoTutorial onComplete={markVideoAsSeen} />
-          } 
+          element={<VideoTutorial onComplete={markVideoAsSeen} />} 
         />
         <Route 
           path="/signup" 
           element={
             user ? <Navigate to="/dashboard" /> : 
-            <Signup 
-              onSignup={handleLogin} 
-              pendingClassification={pendingClassification}
-              onClearPending={clearPendingClassification}
-            />
+            <Signup onSignup={handleLogin} />
           } 
         />
         <Route 
           path="/login" 
           element={
             user ? <Navigate to="/dashboard" /> : 
-            <Login 
-              onLogin={handleLogin}
-              pendingClassification={pendingClassification}
-              onClearPending={clearPendingClassification}
-            />
+            <Login onLogin={handleLogin} />
           } 
         />
         <Route 
           path="/dashboard" 
           element={
-            user ? <Dashboard user={user} onLogout={handleLogout} /> : 
-            <Navigate to="/login" />
+            !hasSeenVideo ? <Navigate to="/video-tutorial" /> :
+            <Dashboard 
+              user={user} 
+              onLogout={handleLogout} 
+              complaints={complaints}
+              onUpdateComplaint={updateComplaintStatus}
+            />
           } 
         />
         <Route 
           path="/classify" 
           element={
-            user ? <Classify user={user} onLogout={handleLogout} /> : 
-            <Navigate to="/login" />
+            !hasSeenVideo ? <Navigate to="/video-tutorial" /> :
+            <Classify 
+              user={user} 
+              onLogout={handleLogout} 
+              onLogin={handleLogin}
+              onAddComplaint={addComplaint}
+            />
           } 
         />
       </Routes>

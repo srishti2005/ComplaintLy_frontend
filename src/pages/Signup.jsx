@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Mail, Lock, AlertCircle } from 'lucide-react';
 import { signup } from '../utils/api';
 
-const Signup = ({ onSignup, pendingClassification, onClearPending }) => {
+const Signup = ({ onSignup }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
@@ -41,14 +41,7 @@ const Signup = ({ onSignup, pendingClassification, onClearPending }) => {
     try {
       const response = await signup(formData.name, formData.email, formData.password);
       onSignup(response.user);
-      
-      // If there's a pending classification, go back to classify page
-      if (pendingClassification) {
-        onClearPending();
-        navigate('/classify');
-      } else {
-        navigate('/dashboard');
-      }
+      navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.error || 'Signup failed. Please try again.');
     } finally {
@@ -65,13 +58,6 @@ const Signup = ({ onSignup, pendingClassification, onClearPending }) => {
           <p className="text-lg text-purple-100 max-w-md mx-auto">
             Create an account to start analyzing and managing complaints efficiently
           </p>
-          {pendingClassification && (
-            <div className="mt-6 p-4 bg-white bg-opacity-20 rounded-xl backdrop-blur-sm">
-              <p className="text-sm">
-                Sign up to view your classification results
-              </p>
-            </div>
-          )}
         </div>
       </div>
 
