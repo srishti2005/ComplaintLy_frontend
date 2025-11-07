@@ -11,14 +11,14 @@ const GetStarted = () => {
       <div className="w-1/2 purple-gradient wave-pattern flex items-center justify-center p-8">
         <div className="text-white text-center fade-in">
           <div className="mb-8 flex justify-center">
-            <div className="w-24 h-24 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
-              <Package className="w-12 h-12" />
+            <div className="w-24 h-24 bg-white bg-opacity-30 rounded-2xl flex items-center justify-center backdrop-blur-sm shadow-lg">
+              <Package className="w-12 h-12 text-white" />
             </div>
           </div>
-          <h1 className="text-5xl font-bold mb-4">
+          <h1 className="text-5xl font-bold mb-4 drop-shadow-lg" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>
             Analyze your<br />complaints
           </h1>
-          <p className="text-lg text-purple-100 max-w-md mx-auto">
+          <p className="text-lg text-white max-w-md mx-auto drop-shadow-md" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}>
             "We are categorizing your complaints for you to best up your customer experience"
           </p>
         </div>
